@@ -7,7 +7,7 @@ This cipher works by replacing every letter in a string with the corresponding l
 - Please no
 
 ## Usage
-Enter the message, enter your key alphabet, the initial offset and the offset added per letter. Then choose encryption/decryption mode.
+Enter the message, enter your key alphabet (needs to contain every letter of the alphabet in upper and lowercase), the initial offset and the offset added per letter. Then choose encryption/decryption mode.
 
 ## To Do
 - Allow special characters / spaces
