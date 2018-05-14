@@ -14,6 +14,7 @@ In standalone mode, enter your message, your key, the offset values and the mode
 In command line mode, use "wordscrambler2001 mode message key initialShift shift" where mode is "-e" for encrypting or "-d" for decrypting.
 <br><br>
 Your key needs to contain the following characters: ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,!?§$%&/()=-_:;
+<br>
 These are the only characters you can encrypt.
 
 ## Roadmap
