@@ -15,7 +15,7 @@ public:
 	
 	void setShiftValue(int n);
 private:
-	std::string alphabetA = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	std::string alphabetA = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,!?§$%&/()=-_:;";
 	std::string alphabetB = "";
 
 	int currentOffset = 0;

@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "ScrambleFuncts.h"
-//#include <iostream>
 
-//bool debug = false;
 /*
 Encrypts the given character, increments the letter offset
 and returns the encrypted character
@@ -17,9 +15,8 @@ char Scrambler::encryptLetter(char letter) {
 			continue;
 		}
 	}
-	//std::cout << "ENC: Letter found at position " << letterVal << std::endl;
-	//std::cout << "ENC: Output letter: " << (letterVal + currentOffset) % alphabetB.length() << std::endl;
 	//fuk
+	//(comment preserved for historic significance)
 
 	digest = alphabetB.at((letterVal + currentOffset) % alphabetB.length());
 	addOffset(shiftValue);
@@ -44,8 +41,6 @@ char Scrambler::decryptLetter(char letter) {
 		shiftChar += alphabetA.length();
 	}
 
-	//std::cout << std::endl << "DEC: " << shiftChar << std::endl;
-
 	digest = alphabetA.at(shiftChar);
 	addOffset(shiftValue);
 
@@ -53,8 +48,6 @@ char Scrambler::decryptLetter(char letter) {
 }
 
 void Scrambler::setKey(std::string key) {
-	//std::cout << "Key set to " << key << std::endl;
-
 	this->alphabetB = key;
 }
 
@@ -67,8 +60,6 @@ void Scrambler::addOffset(int n) {
 	if (this->currentOffset < 0) {
 		this->currentOffset += alphabetA.length();
 	}
-
-	//std::cout << "ADDOFFSET: Offset is now " << currentOffset << std::endl;
 }
 
 /*
@@ -76,12 +67,6 @@ Sets the current offset to n
 */
 void Scrambler::setOffset(int n) {
 	this->currentOffset = n;
-	/*
-	if (mode == 1) {
-	this->currentOffset = alphabetB.find(firstChar);
-	}
-	*/
-	//std::cout << "SETOFFSET: Offset is now " << currentOffset << std::endl;
 }
 
 /*
@@ -89,6 +74,4 @@ Sets the shift value to n
 */
 void Scrambler::setShiftValue(int n) {
 	this->shiftValue = n;
-
-	//std::cout << "Setting Shift Value to " << n << std::endl;
 }

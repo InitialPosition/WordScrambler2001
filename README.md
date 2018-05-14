@@ -7,11 +7,13 @@ This cipher works by replacing every letter in a string with the corresponding l
 - Please no
 
 ## Usage
-Enter the message, enter your key alphabet (needs to contain every letter of the alphabet in upper and lowercase), the initial offset and the offset added per letter. Then choose encryption/decryption mode.
+You can use the program in standalone mode or using a command line.
+In standalone mode, enter your message, your key, the offset values and the mode.
+In command line mode, use "wordscrambler2001 <mode> <message> <key> <initial shift> <shift>" where mode is "-e" for encrypting or "-d" for decrypting.
+Your key needs to contain the following characters: ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,!?§$%&/()=-_:;
+These are the only characters you can encrypt.
 
-## Notes
-- The algorithm currently does not accept spaces, numbers or other special characters
-
-## To Do
-- Allow special characters / spaces
-- Allow calling the program with parameters
+## Roadmap
+- Optimize parameter mode
+- Allow random key generation
+- Simplify usage overall
