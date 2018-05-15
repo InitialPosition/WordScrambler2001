@@ -15,5 +15,4 @@ These are the only characters you can encrypt.
 
 ## Roadmap
 - Optimize parameter mode
-- Allow random key generation
 - Simplify usage overall

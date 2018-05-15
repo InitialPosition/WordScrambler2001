@@ -1,9 +1,11 @@
 #include "stdafx.h"
 #include "ScrambleFuncts.h"
+#include <iostream>
+#include <algorithm>
 
 /*
-Encrypts the given character, increments the letter offset
-and returns the encrypted character
+	Encrypts the given character, increments the letter offset
+	and returns the encrypted character
 */
 char Scrambler::encryptLetter(char letter) {
 	char digest;
@@ -24,6 +26,10 @@ char Scrambler::encryptLetter(char letter) {
 	return digest;
 }
 
+/*
+	Decrypts the given character, increments the letter offset
+	and returns the decrypted character
+*/
 char Scrambler::decryptLetter(char letter) {
 	char digest;
 	int shiftChar = 0;
@@ -47,12 +53,25 @@ char Scrambler::decryptLetter(char letter) {
 	return digest;
 }
 
+/*
+	Sets the cipher key.
+*/
 void Scrambler::setKey(std::string key) {
 	this->alphabetB = key;
 }
 
 /*
-Adds n to the current offset (works with negative numbers)
+	Sets the cipher key to a random key
+*/
+std::string Scrambler::getRandomKey() {
+	std::string randomKey = alphabetA;
+	random_shuffle(randomKey.begin(), randomKey.end());
+
+	return randomKey;
+}
+
+/*
+	Adds n to the current offset (works with negative numbers)
 */
 void Scrambler::addOffset(int n) {
 	this->currentOffset += n;

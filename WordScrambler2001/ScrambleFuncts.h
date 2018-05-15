@@ -9,6 +9,7 @@ public:
 	char decryptLetter(char letter);
 
 	void setKey(std::string key);
+	std::string getRandomKey();
 
 	void addOffset(int n);
 	void setOffset(int n);
