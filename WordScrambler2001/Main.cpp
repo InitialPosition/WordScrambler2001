@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include <iostream>
 #include <cstdlib>
+#include <ctime>
 #include "ScrambleFuncts.h"
 
 #define MODE_ENCRYPT "-e"
@@ -10,11 +11,42 @@
 
 int main(int argc, char* argv[])
 {
-	Scrambler scrambler;
+	//seed the randomizer
+	std::srand(std::time(nullptr));
 
+	//initialize variables and instances
+	Scrambler scrambler;
 	int shiftValue, initShift;
 	std::string message, key, line;
 	int mode;
+
+	const int SPLASH_AMOUNT = 25;
+	const char* splashs[SPLASH_AMOUNT] = {	"This is a splash message!", 
+											"Completely random output!",
+											"97% Bug Free!", 
+											"Magic inside!", 
+											"GOTO a", 
+											"Where is my mind?", 
+											"Snake? Snake! SNAAAAAKE!", 
+											"Powered by C++!", 
+											"Perfectly formatted source code!", 
+											"EXTERMINATE!", 
+											"This splash message will never appear! Wait...", 
+											"Use a better encryption please!", 
+											"Hello, World!", 
+											"Hi Chris!", 
+											"The most useless waste of HDD space!", 
+											"Also try NodeScrambler2001!", 
+											"Crazy letter manipulation!", 
+											"Uses cstrings!", 
+											"Also try DROP!", 
+											"Also try Commodore Combat!", 
+											"Half Life 3 confirmed!", 
+											"AEIOU.", 
+											"Shoutouts to SimpleFlips", 
+											"[ REDACTED ]", 
+											"https://www.youtube.com/watch?v=oHg5SJYRHA0"};
+	std::string chosenSplash = splashs[rand() % SPLASH_AMOUNT];
 
 	//read parameters
 	if (argc <= 1) {
@@ -24,8 +56,10 @@ int main(int argc, char* argv[])
 						"  \\ \\ /\\ / / _ \\| \'__/ _` \\___ \\ / __| \'__/ _` | \'_ ` _ \\| \'_ \\| |/ _ | \'__|__) | | | | | | | |" << std::endl <<
 						"   \\ V  V | (_) | | | (_| |___) | (__| | | (_| | | | | | | |_) | |  __| |  / __/| |_| | |_| | |" << std::endl <<
 						"    \\_/\\_/ \\___/|_|  \\__,_|____/ \\___|_|  \\__,_|_| |_| |_|_.__/|_|\\___|_| |_____|\\___/ \\___/|_|" << std::endl << std::endl <<
-						"(c) 2018 Syrapt0r" << std::endl <<
+						"Version 1.3.1, (c) 2018 Syrapt0r" << std::endl <<
+						chosenSplash << std::endl <<
 
+		//read parameters
 		std::endl << "MESSAGE: ";
 		getline(std::cin, line);
 		message += line;
@@ -39,21 +73,22 @@ int main(int argc, char* argv[])
 		std::cout << "MODE (0: Encrypt, 1: Decrypt): ";
 		std::cin >> mode;
 
-		//set parameters
+		//set scrambler parameters
 		scrambler.setOffset(initShift);
 		scrambler.setShiftValue(shiftValue);
 
 		scrambler.addOffset(shiftValue);
 
+		//generate key if no key was given
 		if (key == "") {
 			key = scrambler.getRandomKey();
 		}
 		scrambler.setKey(key);
 
-		system("cls");
+		std::cout << std::endl;
 
 		//OUTPUT
-		std::cout << "########## PARAMETERS ##########" << std::endl
+		std::cout	<< "################################" << std::endl << std::endl
 					<< "MESSAGE:       " << message << std::endl
 					<< "KEY:           " << key << std::endl
 					<< "INITIAL SHIFT: " << initShift << std::endl
