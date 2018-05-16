@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ScrambleFuncts.h"
-#include <iostream>
 #include <algorithm>
+#include <ctime>
 
 /*
 	Encrypts the given character, increments the letter offset
@@ -64,6 +64,8 @@ void Scrambler::setKey(std::string key) {
 	Sets the cipher key to a random key
 */
 std::string Scrambler::getRandomKey() {
+	std::srand(std::time(nullptr));
+
 	std::string randomKey = alphabetA;
 	random_shuffle(randomKey.begin(), randomKey.end());
 

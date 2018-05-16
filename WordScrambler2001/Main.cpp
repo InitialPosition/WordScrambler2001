@@ -19,9 +19,13 @@ int main(int argc, char* argv[])
 	//read parameters
 	if (argc <= 1) {
 		//run in standalone mode
-		std::cout <<	"#########################" << std::endl <<
-						"### WordScrambler2001 ###" << std::endl <<
-						"#########################" << std::endl <<
+		std::cout <<	" __        __            _ ____                           _     _          ____   ___   ___  _ " << std::endl <<
+						" \\ \\      / | _  _ __ __| / ___|  ___ _ __ __ _ _ __ ___ | |__ | | ___ _ _|___ \\ / _ \\ / _ \\/ |" << std::endl <<
+						"  \\ \\ /\\ / / _ \\| \'__/ _` \\___ \\ / __| \'__/ _` | \'_ ` _ \\| \'_ \\| |/ _ | \'__|__) | | | | | | | |" << std::endl <<
+						"   \\ V  V | (_) | | | (_| |___) | (__| | | (_| | | | | | | |_) | |  __| |  / __/| |_| | |_| | |" << std::endl <<
+						"    \\_/\\_/ \\___/|_|  \\__,_|____/ \\___|_|  \\__,_|_| |_| |_|_.__/|_|\\___|_| |_____|\\___/ \\___/|_|" << std::endl << std::endl <<
+						"(c) 2018 Syrapt0r" << std::endl <<
+
 		std::endl << "MESSAGE: ";
 		getline(std::cin, line);
 		message += line;
@@ -97,7 +101,7 @@ int main(int argc, char* argv[])
 							<< "Syntax: wordscrambler2001 <mode> <message> <key> <initial shift> <shift value>" << std::endl
 							<< "Mode: -e for encrypt, -d for decrypt" << std::endl
 							<< "Message: The message to encrypt/decrypt" << std::endl
-							<< "Key: The cipher key" << std::endl
+							<< "Key: The cipher key (blank for random key)" << std::endl
 							<< "Initial shift: The shift value to start with" << std::endl
 							<< "Shift value: The value to shift each letter" << std::endl;
 
@@ -109,15 +113,29 @@ int main(int argc, char* argv[])
 			}
 		}
 		else {
-			message = argv[2];
-			key = argv[3];
-			initShift = atoi(argv[4]);
-			shiftValue = atoi(argv[5]);
+			if (argc == 6) {				//key given
+				message = argv[2];
+				key = argv[3];
+				initShift = atoi(argv[4]);
+				shiftValue = atoi(argv[5]);
+			}
+
+			if (argc == 5) {				//no key given
+				message = argv[2];
+				key = "";
+				initShift = atoi(argv[3]);
+				shiftValue = atoi(argv[4]);
+			}
 
 			//set parameters
 			scrambler.setOffset(initShift);
 			scrambler.setShiftValue(shiftValue);
 			scrambler.addOffset(shiftValue);
+
+			if (key == "") {
+				key = scrambler.getRandomKey();
+				std::cout << key << "|";
+			}
 
 			scrambler.setKey(key);
 
