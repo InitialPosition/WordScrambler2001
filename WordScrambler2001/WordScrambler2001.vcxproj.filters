@@ -24,6 +24,9 @@
     <ClInclude Include="ScrambleFuncts.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="base64.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -33,6 +36,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="base64.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

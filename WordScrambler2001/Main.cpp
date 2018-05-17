@@ -3,10 +3,12 @@
 #include <cstdlib>
 #include <ctime>
 #include "ScrambleFuncts.h"
+#include "base64.h"
 
 #define MODE_ENCRYPT "-e"
 #define MODE_DECRYPT "-d"
 #define MODE_HELP "-help"
+#define MODE_B64 "-base64"
 
 
 int main(int argc, char* argv[])
@@ -16,24 +18,27 @@ int main(int argc, char* argv[])
 
 	//initialize variables and instances
 	Scrambler scrambler;
-	int shiftValue, initShift;
+	int shiftValue, initShift, mode, b64;
+	bool showKey = false;
 	std::string message, key, line;
-	int mode;
+	std::string output = "";
+	std::string version = "1.4";
 
-	const int SPLASH_AMOUNT = 25;
+	const int SPLASH_AMOUNT = 40;
 	const char* splashs[SPLASH_AMOUNT] = {	"This is a splash message!", 
 											"Completely random output!",
 											"97% Bug Free!", 
 											"Magic inside!", 
-											"GOTO a", 
+											"mov	ax,'00'", 
 											"Where is my mind?", 
 											"Snake? Snake! SNAAAAAKE!", 
 											"Powered by C++!", 
 											"Perfectly formatted source code!", 
 											"EXTERMINATE!", 
-											"This splash message will never appear! Wait...", 
+											"This splash message will never appear! Wait... damn.", 
 											"Use a better encryption please!", 
 											"Hello, World!", 
+											"Hi Ryan!", 
 											"Hi Chris!", 
 											"The most useless waste of HDD space!", 
 											"Also try NodeScrambler2001!", 
@@ -41,11 +46,25 @@ int main(int argc, char* argv[])
 											"Uses cstrings!", 
 											"Also try DROP!", 
 											"Also try Commodore Combat!", 
+											"Help I am captivated and forced to write splash texts", 
 											"Half Life 3 confirmed!", 
 											"AEIOU.", 
 											"Shoutouts to SimpleFlips", 
 											"[ REDACTED ]", 
-											"https://www.youtube.com/watch?v=oHg5SJYRHA0"};
+											"https://www.youtube.com/watch?v=oHg5SJYRHA0", 
+											"Please check out my music!", 
+											"Encryption? Where we're going, we won't need encryption!", 
+											"This statement is true!", 
+											"This statement is false!", 
+											"Only uses one color!", 
+											"The best Open-Source encryption on the market!", 
+											"Dubstep is pretty nice actually", 
+											"Listen to MDK!", 
+											"Listen to TheFatRat!", 
+											"Listen to Waterflame!", 
+											"Sorry, I don't speak polish.", 
+											"Now with Base64!", 
+											"Better than MD5!"};
 	std::string chosenSplash = splashs[rand() % SPLASH_AMOUNT];
 
 	//read parameters
@@ -56,7 +75,7 @@ int main(int argc, char* argv[])
 						"  \\ \\ /\\ / / _ \\| \'__/ _` \\___ \\ / __| \'__/ _` | \'_ ` _ \\| \'_ \\| |/ _ | \'__|__) | | | | | | | |" << std::endl <<
 						"   \\ V  V | (_) | | | (_| |___) | (__| | | (_| | | | | | | |_) | |  __| |  / __/| |_| | |_| | |" << std::endl <<
 						"    \\_/\\_/ \\___/|_|  \\__,_|____/ \\___|_|  \\__,_|_| |_| |_|_.__/|_|\\___|_| |_____|\\___/ \\___/|_|" << std::endl << std::endl <<
-						"Version 1.3.1, (c) 2018 Syrapt0r" << std::endl <<
+						"Version " << version << ", (c) 2018 Syrapt0r" << std::endl <<
 						chosenSplash << std::endl <<
 
 		//read parameters
@@ -73,6 +92,14 @@ int main(int argc, char* argv[])
 		std::cout << "MODE (0: Encrypt, 1: Decrypt): ";
 		std::cin >> mode;
 
+		if (mode == 0) {
+			std::cout << "CONVERT OUTPUT TO BASE64 (0: No, 1: Yes): ";
+		}
+		if (mode == 1) {
+			std::cout << "IS INPUT BASE64 (0: No, 1: Yes): ";
+		}
+		std::cin >> b64;
+
 		//set scrambler parameters
 		scrambler.setOffset(initShift);
 		scrambler.setShiftValue(shiftValue);
@@ -81,41 +108,50 @@ int main(int argc, char* argv[])
 
 		//generate key if no key was given
 		if (key == "") {
+			showKey = true;
 			key = scrambler.getRandomKey();
 		}
+
 		scrambler.setKey(key);
 
 		std::cout << std::endl;
 
 		//OUTPUT
-		std::cout	<< "################################" << std::endl << std::endl
-					<< "MESSAGE:       " << message << std::endl
-					<< "KEY:           " << key << std::endl
-					<< "INITIAL SHIFT: " << initShift << std::endl
-					<< "SHIFT VALUE:   " << shiftValue << std::endl;
+		std::cout << "################################" << std::endl << std::endl;
 
-		if (mode == 0) {
-			std::cout << "MODE:          ENCRYPTION";
+		if (showKey) {
+			std::cout << "KEY: " << key << std::endl;
 		}
-		else if (mode == 1) {
-			std::cout << "MODE:          DECRYPTION";
-		}
-		else {
-			std::cout << "MODE:          This should be impossible to do but better safe than sorry";
-		}
-
-		std::cout << std::endl << std::endl << "OUTPUT: ";
+		std::cout << "OUTPUT: ";
 
 		//encrypt / decrypt
 		if (mode == 0) {
+			//encrypt the message
 			for (int i = 0; i < message.length(); i++) {
-				std::cout << scrambler.encryptLetter(message.at(i));
+				output += scrambler.encryptLetter(message.at(i));
 			}
+
+			//if wanted, convert final output to base64
+			if (b64 == 1) {
+				output = base64_encode(output);
+			}
+
+			//finally, output the digest
+			std::cout << output << std::endl;
 		}
 		else if (mode == 1) {
-			for (int i = 0; i < message.length(); i++) {
-				std::cout << scrambler.decryptLetter(message.at(i));
+			//if input is base64, convert to encrypted string
+			if (b64 == 1) {
+				message = base64_decode(message);
 			}
+
+			//decrypt the string
+			for (int i = 0; i < message.length(); i++) {
+				output += scrambler.decryptLetter(message.at(i));
+			}
+
+			//finally, output the digest
+			std::cout << output << std::endl;
 		}
 		else {
 			std::cout << "Unrecognized mode parameter, aborting" << std::endl;
@@ -131,14 +167,15 @@ int main(int argc, char* argv[])
 		if (argc < 5) {
 			if (strcmp(argv[1], MODE_HELP) == 0) {
 				//show help
-				std::cout	<< "                           WordScrambler2001 Help" << std::endl
-							<< "------------------------------------------------------------------------------" << std::endl
-							<< "Syntax: wordscrambler2001 <mode> <message> <key> <initial shift> <shift value>" << std::endl
-							<< "Mode: -e for encrypt, -d for decrypt" << std::endl
-							<< "Message: The message to encrypt/decrypt" << std::endl
-							<< "Key: The cipher key (blank for random key)" << std::endl
-							<< "Initial shift: The shift value to start with" << std::endl
-							<< "Shift value: The value to shift each letter" << std::endl;
+				std::cout << "                           WordScrambler2001 Help" << std::endl
+					<< "------------------------------------------------------------------------------" << std::endl
+					<< "Syntax: wordscrambler2001 <mode> <message> <key> <initial shift> <shift value>" << std::endl
+					<< "-e				Encryption Mode" << std::endl
+					<< "-d				Decryption Mode" << std::endl
+					<< "key				The key to use for encryption/decryption. Optional." << std::endl
+					<< "Initial Shift	The shifting done before the actual shifting. Should be between 0 and 50." << std::endl
+					<< "Shift Value		The shifting done every letter. Should be between 0 and 50." << std::endl;
+							//<< "-base64			If the output should be base64 encoded / If the input is base64 encoded. Optional." << std::endl;
 
 				return 0;
 			}
