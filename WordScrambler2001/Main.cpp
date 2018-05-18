@@ -5,11 +5,81 @@
 #include "ScrambleFuncts.h"
 #include "base64.h"
 
-#define MODE_ENCRYPT "-e"
-#define MODE_DECRYPT "-d"
-#define MODE_HELP "-help"
-#define MODE_B64 "-base64"
+void mainFunc(Scrambler scrambler, int shiftValue, int initShift, int mode, int b64, bool showKey, std::string message, std::string key, bool cmdMode) {
+	std::string output = "";
 
+	//set scrambler parameters
+	scrambler.setOffset(initShift);
+	scrambler.setShiftValue(shiftValue);
+	scrambler.addOffset(shiftValue);
+
+	//generate key if no key was given
+	if (key == "") {
+		showKey = true;
+		key = scrambler.getRandomKey();
+	}
+
+	if (b64 == 1 && showKey == false) {
+		scrambler.setKey(base64_decode(key));
+	}
+	else {
+		scrambler.setKey(key);
+	}
+	std::cout << std::endl;
+
+	//OUTPUT
+	if (!cmdMode) {
+		std::cout << "################################" << std::endl << std::endl;
+
+		if (showKey) {
+			if (b64 == 1) {
+				std::cout << "KEY: " << base64_encode(key) << std::endl;
+			}
+			else {
+				std::cout << "KEY: " << key << std::endl;
+			}
+		}
+		std::cout << "OUTPUT: ";
+	}
+
+	//encrypt / decrypt
+	if (mode == 0) {
+		for (int i = 0; i < message.length(); i++) {
+			output += scrambler.encryptLetter(message.at(i));
+		}
+
+		if (b64 == 1) {
+			output = base64_encode(output);
+		}
+	}
+	else if (mode == 1) {
+		if (b64 == 1) {
+			message = base64_decode(message);
+		}
+
+		for (int i = 0; i < message.length(); i++) {
+			output += scrambler.decryptLetter(message.at(i));
+		}
+	}
+	else {
+		std::cerr << "Unrecognized mode parameter, aborting" << std::endl;
+	}
+
+	std::cout << output << std::endl << std::endl;
+}
+
+void showHelp() {
+	std::cout << std::endl << "                           WordScrambler2001 Help" << std::endl
+		<< "------------------------------------------------------------------------------" << std::endl
+		<< "Syntax: WordScrambler2001.exe <parameters>" << std::endl
+		<< "-e		| --encrypt				Encryption Mode" << std::endl
+		<< "-d		| --decrypt				Decryption Mode" << std::endl
+		<< "-m		| --message				The message to en-/decrypt" << std::endl
+		<< "-k		| --key					The cipher key (Optional)" << std::endl
+		<< "-i		| --initial-shift			The initial cipher shift" << std::endl
+		<< "-s		| --shift-value				The shift value applied after every letter" << std::endl
+		<< "-b64		| --base64				If the input/output is in Base64 (Optional)" << std::endl;
+}
 
 int main(int argc, char* argv[])
 {
@@ -21,8 +91,7 @@ int main(int argc, char* argv[])
 	int shiftValue, initShift, mode, b64;
 	bool showKey = false;
 	std::string message, key, line;
-	std::string output = "";
-	std::string version = "1.4";
+	std::string version = "1.4.1";
 
 	const int SPLASH_AMOUNT = 40;
 	const char* splashs[SPLASH_AMOUNT] = {	"This is a splash message!", 
@@ -100,132 +169,63 @@ int main(int argc, char* argv[])
 		}
 		std::cin >> b64;
 
-		//set scrambler parameters
-		scrambler.setOffset(initShift);
-		scrambler.setShiftValue(shiftValue);
-
-		scrambler.addOffset(shiftValue);
-
-		//generate key if no key was given
-		if (key == "") {
-			showKey = true;
-			key = scrambler.getRandomKey();
-		}
-
-		scrambler.setKey(key);
-
-		std::cout << std::endl;
-
-		//OUTPUT
-		std::cout << "################################" << std::endl << std::endl;
-
-		if (showKey) {
-			std::cout << "KEY: " << key << std::endl;
-		}
-		std::cout << "OUTPUT: ";
-
-		//encrypt / decrypt
-		if (mode == 0) {
-			//encrypt the message
-			for (int i = 0; i < message.length(); i++) {
-				output += scrambler.encryptLetter(message.at(i));
-			}
-
-			//if wanted, convert final output to base64
-			if (b64 == 1) {
-				output = base64_encode(output);
-			}
-
-			//finally, output the digest
-			std::cout << output << std::endl;
-		}
-		else if (mode == 1) {
-			//if input is base64, convert to encrypted string
-			if (b64 == 1) {
-				message = base64_decode(message);
-			}
-
-			//decrypt the string
-			for (int i = 0; i < message.length(); i++) {
-				output += scrambler.decryptLetter(message.at(i));
-			}
-
-			//finally, output the digest
-			std::cout << output << std::endl;
-		}
-		else {
-			std::cout << "Unrecognized mode parameter, aborting" << std::endl;
-		}
-
-
-		std::cout << std::endl << std::endl;
+		mainFunc(scrambler, shiftValue, initShift, mode, b64, showKey, message, key, false);
 
 		system("PAUSE");
 	}
 	else {
-		//run in parameter mode
-		if (argc < 5) {
-			if (strcmp(argv[1], MODE_HELP) == 0) {
-				//show help
-				std::cout << "                           WordScrambler2001 Help" << std::endl
-					<< "------------------------------------------------------------------------------" << std::endl
-					<< "Syntax: wordscrambler2001 <mode> <message> <key> <initial shift> <shift value>" << std::endl
-					<< "-e				Encryption Mode" << std::endl
-					<< "-d				Decryption Mode" << std::endl
-					<< "key				The key to use for encryption/decryption. Optional." << std::endl
-					<< "Initial Shift	The shifting done before the actual shifting. Should be between 0 and 50." << std::endl
-					<< "Shift Value		The shifting done every letter. Should be between 0 and 50." << std::endl;
-							//<< "-base64			If the output should be base64 encoded / If the input is base64 encoded. Optional." << std::endl;
-
+		//read in given parameters
+		if (argc < 9) {
+			//help
+			if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
+				showHelp();
 				return 0;
 			}
 			else {
-				std::cout << "Invalid parameters. Use -help to see help." << std::endl;
+				std::cerr << "Invalid parameters. Use --help or -h to show help.";
 				return 1;
 			}
 		}
 		else {
-			if (argc == 6) {				//key given
-				message = argv[2];
-				key = argv[3];
-				initShift = atoi(argv[4]);
-				shiftValue = atoi(argv[5]);
-			}
-
-			if (argc == 5) {				//no key given
-				message = argv[2];
-				key = "";
-				initShift = atoi(argv[3]);
-				shiftValue = atoi(argv[4]);
-			}
-
-			//set parameters
-			scrambler.setOffset(initShift);
-			scrambler.setShiftValue(shiftValue);
-			scrambler.addOffset(shiftValue);
-
-			if (key == "") {
-				key = scrambler.getRandomKey();
-				std::cout << key << "|";
-			}
-
-			scrambler.setKey(key);
-
-			//encrypt / decrypt
-			if (strcmp(argv[1], MODE_ENCRYPT) == 0) {
-				for (int i = 0; i < message.length(); i++) {
-					std::cout << scrambler.encryptLetter(message.at(i));
+			b64 = 0;
+			for (int i = 1; i < argc; i++) {
+				//determine user mode
+				if (strcmp(argv[i], "-e") == 0 || strcmp(argv[i], "--encrypt") == 0) {
+					mode = 0;
 				}
-			} 
-			else if (strcmp(argv[1], MODE_DECRYPT) == 0) {
-				for (int i = 0; i < message.length(); i++) {
-					std::cout << scrambler.decryptLetter(message.at(i));
+				if (strcmp(argv[i], "-d") == 0 || strcmp(argv[i], "--decrypt") == 0) {
+					mode = 1;
+				}
+
+				//get message
+				if (strcmp(argv[i], "-m") == 0 || strcmp(argv[i], "--message") == 0) {
+					message = argv[i + 1];
+					i++;
+				}
+
+				//get key
+				if (strcmp(argv[i], "-k") == 0 || strcmp(argv[i], "--key") == 0) {
+					key = argv[i + 1];
+					i++;
+				}
+
+				//get shift values
+				if (strcmp(argv[i], "-i") == 0 || strcmp(argv[i], "--initial-shift") == 0) {
+					initShift = atoi(argv[i + 1]);
+					i++;
+				}
+				if (strcmp(argv[i], "-s") == 0 || strcmp(argv[i], "--shift-value") == 0) {
+					shiftValue = atoi(argv[i + 1]);
+					i++;
+				}
+
+				//toggle base64 mode
+				if (strcmp(argv[i], "-b64") == 0 || strcmp(argv[i], "--base64") == 0) {
+					b64 = 1;
 				}
 			}
-			else {
-				std::cout << "Unrecognized operation.";
-				return 1;
-			}
+
+			mainFunc(scrambler, shiftValue, initShift, mode, b64, showKey, message, key, true);
 		}
 	}
 

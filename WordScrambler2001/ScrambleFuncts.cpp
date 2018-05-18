@@ -13,7 +13,7 @@ char Scrambler::encryptLetter(char letter) {
 	for (int i = 0; i < alphabetA.length(); i++) {
 		if (letter == alphabetA.at(i)) {
 			letterVal = i;
-			continue;
+			break;
 		}
 	}
 	//fuk
@@ -37,7 +37,7 @@ char Scrambler::decryptLetter(char letter) {
 	for (int i = 0; i < alphabetB.length(); i++) {
 		if (letter == alphabetB.at(i)) {
 			letterVal = i;
-			continue;
+			break;
 		}
 	}
 
