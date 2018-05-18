@@ -25,16 +25,21 @@ There are two ways to use the program.
 1. Select if your output should be Base64 encoded.
 
 #### Command Line Mode:
-1. Call the program using `WordScrambler2001.exe <parameters> <message> <key> <initial offset> <shift value>`
+Call the program using `WordScrambler2001.exe <parameters>`
 ##### Command Line Parameters:
-Parameter|Meaning|Optional
----------|-------|--------
--e|Run in encryption mode|no
--d|Run in decryption mode|no
+Parameter|Optional Parameter|Meaning|Optional
+---------|------------------|-------|--------
+--encrypt|-e|Encryption Mode|No
+--decrypt|-d|Decryption Mode|No
+--message|-m|Message to en-/decrypt|No
+--key|-k|Cipher Key|Yes
+--initial-shift|-i|Initial Cipher Shift|No
+--shift-value|-s|Cipher Shift Value|No
+--base64|-b64|Whether Input/Output is in Base64|Yes
 
 ## Roadmap
 - [X] Add parameter mode
 - [X] Add spaces / special characters
-- [ ] Add Base64 to parameter mode
-- [ ] Improve parameter mode overall
+- [X] Add Base64 to parameter mode
+- [X] Improve parameter mode overall
 - [ ] Improve algorithm safety
