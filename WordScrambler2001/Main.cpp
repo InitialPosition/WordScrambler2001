@@ -41,6 +41,16 @@ void mainFunc(Scrambler scrambler, int shiftValue, int initShift, int mode, int 
 		}
 		std::cout << "OUTPUT: ";
 	}
+	else {
+		if (showKey) {
+			if (b64 == 1) {
+				std::cout << base64_encode(key) << "|";
+			}
+			else {
+				std::cout << key << "|";
+			}
+		}
+	}
 
 	//encrypt / decrypt
 	if (mode == 0) {
@@ -91,7 +101,7 @@ int main(int argc, char* argv[])
 	int shiftValue, initShift, mode, b64;
 	bool showKey = false;
 	std::string message, key, line;
-	std::string version = "1.4.1";
+	std::string version = "1.4.2";
 
 	const int SPLASH_AMOUNT = 40;
 	const char* splashs[SPLASH_AMOUNT] = {	"This is a splash message!", 
