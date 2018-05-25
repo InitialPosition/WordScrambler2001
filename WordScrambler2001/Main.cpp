@@ -54,6 +54,8 @@ void mainFunc(Scrambler scrambler, int shiftValue, int initShift, int mode, int 
 
 	//encrypt / decrypt
 	if (mode == 0) {
+		message = base64_encode(message);
+
 		for (int i = 0; i < message.length(); i++) {
 			output += scrambler.encryptLetter(message.at(i));
 		}
@@ -70,6 +72,8 @@ void mainFunc(Scrambler scrambler, int shiftValue, int initShift, int mode, int 
 		for (int i = 0; i < message.length(); i++) {
 			output += scrambler.decryptLetter(message.at(i));
 		}
+
+		output = base64_decode(output);
 	}
 	else {
 		std::cerr << "Unrecognized mode parameter, aborting" << std::endl;
@@ -101,9 +105,9 @@ int main(int argc, char* argv[])
 	int shiftValue, initShift, mode, b64;
 	bool showKey = false;
 	std::string message, key, line;
-	std::string version = "1.4.2";
+	std::string version = "1.5";
 
-	const int SPLASH_AMOUNT = 40;
+	const int SPLASH_AMOUNT = 39;
 	const char* splashs[SPLASH_AMOUNT] = {	"This is a splash message!", 
 											"Completely random output!",
 											"97% Bug Free!", 
@@ -130,20 +134,19 @@ int main(int argc, char* argv[])
 											"AEIOU.", 
 											"Shoutouts to SimpleFlips", 
 											"[ REDACTED ]", 
-											"https://www.youtube.com/watch?v=oHg5SJYRHA0", 
-											"Please check out my music!", 
+											"Fork me on GitHub!", 
 											"Encryption? Where we're going, we won't need encryption!", 
 											"This statement is true!", 
 											"This statement is false!", 
 											"Only uses one color!", 
 											"The best Open-Source encryption on the market!", 
-											"Dubstep is pretty nice actually", 
-											"Listen to MDK!", 
-											"Listen to TheFatRat!", 
-											"Listen to Waterflame!", 
 											"Sorry, I don't speak polish.", 
 											"Now with Base64!", 
-											"Better than MD5!"};
+											"Better than MD5!", 
+											"Finally supports full ASCII!", 
+											"output(random_text);", 
+											"Conke or Bepis, that is the question", 
+											"Can I pwease haww a better encwiption :3333"};
 	std::string chosenSplash = splashs[rand() % SPLASH_AMOUNT];
 
 	//read parameters
