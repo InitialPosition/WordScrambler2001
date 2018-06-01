@@ -13,7 +13,7 @@ public:
 
 	void addOffset(int n);
 	void setOffset(int n);
-	
+
 	void setShiftValue(int n);
 private:
 	std::string alphabetA = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,:;!$%&/()=?+*#'-_";

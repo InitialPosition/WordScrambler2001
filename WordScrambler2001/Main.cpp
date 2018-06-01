@@ -105,63 +105,62 @@ int main(int argc, char* argv[])
 	int shiftValue, initShift, mode, b64;
 	bool showKey = false;
 	std::string message, key, line;
-	std::string version = "1.5";
+	std::string version = "1.5.1";
 
-	const int SPLASH_AMOUNT = 39;
-	const char* splashs[SPLASH_AMOUNT] = {	"This is a splash message!", 
+	const int SPLASH_AMOUNT = 38;
+	const char* splashs[SPLASH_AMOUNT] = { "This is a splash message!",
 											"Completely random output!",
-											"97% Bug Free!", 
-											"Magic inside!", 
-											"mov	ax,'00'", 
-											"Where is my mind?", 
-											"Snake? Snake! SNAAAAAKE!", 
-											"Powered by C++!", 
-											"Perfectly formatted source code!", 
-											"EXTERMINATE!", 
-											"This splash message will never appear! Wait... damn.", 
-											"Use a better encryption please!", 
-											"Hello, World!", 
-											"Hi Ryan!", 
-											"Hi Chris!", 
-											"The most useless waste of HDD space!", 
-											"Also try NodeScrambler2001!", 
-											"Crazy letter manipulation!", 
-											"Uses cstrings!", 
-											"Also try DROP!", 
-											"Also try Commodore Combat!", 
-											"Help I am captivated and forced to write splash texts", 
-											"Half Life 3 confirmed!", 
-											"AEIOU.", 
-											"Shoutouts to SimpleFlips", 
-											"[ REDACTED ]", 
-											"Fork me on GitHub!", 
-											"Encryption? Where we're going, we won't need encryption!", 
-											"This statement is true!", 
-											"This statement is false!", 
-											"Only uses one color!", 
-											"The best Open-Source encryption on the market!", 
-											"Sorry, I don't speak polish.", 
-											"Now with Base64!", 
-											"Better than MD5!", 
-											"Finally supports full ASCII!", 
-											"output(random_text);", 
-											"Conke or Bepis, that is the question", 
-											"Can I pwease haww a better encwiption :3333"};
+											"97% Bug Free!",
+											"Magic inside!",
+											"mov	ax,'00'",
+											"Snake? Snake! SNAAAAAKE!",
+											"Powered by C++!",
+											"Perfectly formatted source code!",
+											"EXTERMINATE!",
+											"This splash message will never appear! Wait... damn.",
+											"Use a better encryption please!",
+											"Hello, World!",
+											"Hi Ryan!",
+											"Hi Chris!",
+											"The most useless waste of HDD space!",
+											"Also try NodeScrambler2001!",
+											"Crazy letter manipulation!",
+											"Uses cstrings!",
+											"Also try DROP!",
+											"Also try Commodore Combat!",
+											"Help I am captivated and forced to write splash texts",
+											"Half Life 3 confirmed!",
+											"AEIOU.",
+											"Shoutouts to SimpleFlips",
+											"[ REDACTED ]",
+											"Fork me on GitHub!",
+											"Encryption? Where we're going, we won't need encryption!",
+											"This statement is true!",
+											"This statement is false!",
+											"Only uses one color!",
+											"The best Open-Source encryption on the market!",
+											"Sorry, I don't speak polish.",
+											"Now with Base64!",
+											"Better than MD5!",
+											"Finally supports full ASCII!",
+											"output(random_text);",
+											"Conke or Bepis, that is the question",
+											"Can I pwease haww a better encwiption :3333" };
 	std::string chosenSplash = splashs[rand() % SPLASH_AMOUNT];
 
 	//read parameters
 	if (argc <= 1) {
 		//run in standalone mode
-		std::cout <<	" __        __            _ ____                           _     _          ____   ___   ___  _ " << std::endl <<
-						" \\ \\      / | _  _ __ __| / ___|  ___ _ __ __ _ _ __ ___ | |__ | | ___ _ _|___ \\ / _ \\ / _ \\/ |" << std::endl <<
-						"  \\ \\ /\\ / / _ \\| \'__/ _` \\___ \\ / __| \'__/ _` | \'_ ` _ \\| \'_ \\| |/ _ | \'__|__) | | | | | | | |" << std::endl <<
-						"   \\ V  V | (_) | | | (_| |___) | (__| | | (_| | | | | | | |_) | |  __| |  / __/| |_| | |_| | |" << std::endl <<
-						"    \\_/\\_/ \\___/|_|  \\__,_|____/ \\___|_|  \\__,_|_| |_| |_|_.__/|_|\\___|_| |_____|\\___/ \\___/|_|" << std::endl << std::endl <<
-						"Version " << version << ", (c) 2018 Syrapt0r" << std::endl <<
-						chosenSplash << std::endl <<
+		std::cout << " __        __            _ ____                           _     _          ____   ___   ___  _ " << std::endl <<
+			" \\ \\      / | _  _ __ __| / ___|  ___ _ __ __ _ _ __ ___ | |__ | | ___ _ _|___ \\ / _ \\ / _ \\/ |" << std::endl <<
+			"  \\ \\ /\\ / / _ \\| \'__/ _` \\___ \\ / __| \'__/ _` | \'_ ` _ \\| \'_ \\| |/ _ | \'__|__) | | | | | | | |" << std::endl <<
+			"   \\ V  V | (_) | | | (_| |___) | (__| | | (_| | | | | | | |_) | |  __| |  / __/| |_| | |_| | |" << std::endl <<
+			"    \\_/\\_/ \\___/|_|  \\__,_|____/ \\___|_|  \\__,_|_| |_| |_|_.__/|_|\\___|_| |_____|\\___/ \\___/|_|" << std::endl << std::endl <<
+			"Version " << version << ", (c) 2018 Syrapt0r" << std::endl <<
+			chosenSplash << std::endl <<
 
-		//read parameters
-		std::endl << "MESSAGE: ";
+			//read parameters
+			std::endl << "MESSAGE: ";
 		getline(std::cin, line);
 		message += line;
 		std::cout << "KEY (leave blank for random): ";
@@ -188,59 +187,67 @@ int main(int argc, char* argv[])
 	}
 	else {
 		//read in given parameters
-		if (argc < 9) {
-			//help
-			if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
-				showHelp();
-				return 0;
+		bool hasMode = false;
+		bool hasMessage = false;
+		bool hasInit = false;
+		bool hasShift = false;
+
+		if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
+			showHelp();
+			return 0;
+		}
+
+		b64 = 0;
+		for (int i = 1; i < argc; i++) {
+			//determine user mode
+			if (strcmp(argv[i], "-e") == 0 || strcmp(argv[i], "--encrypt") == 0) {
+				hasMode = true;
+				mode = 0;
 			}
-			else {
-				std::cerr << "Invalid parameters. Use --help or -h to show help.";
-				return 1;
+			if (strcmp(argv[i], "-d") == 0 || strcmp(argv[i], "--decrypt") == 0) {
+				hasMode = true;
+				mode = 1;
+			}
+
+			//get message
+			if (strcmp(argv[i], "-m") == 0 || strcmp(argv[i], "--message") == 0) {
+				hasMessage = true;
+				message = argv[i + 1];
+				i++;
+			}
+
+			//get key
+			if (strcmp(argv[i], "-k") == 0 || strcmp(argv[i], "--key") == 0) {
+				key = argv[i + 1];
+				i++;
+			}
+
+			//get shift values
+			if (strcmp(argv[i], "-i") == 0 || strcmp(argv[i], "--initial-shift") == 0) {
+				hasInit = true;
+				initShift = atoi(argv[i + 1]);
+				i++;
+			}
+			if (strcmp(argv[i], "-s") == 0 || strcmp(argv[i], "--shift-value") == 0) {
+				hasShift = true;
+				shiftValue = atoi(argv[i + 1]);
+				i++;
+			}
+
+			//toggle base64 mode
+			if (strcmp(argv[i], "-b64") == 0 || strcmp(argv[i], "--base64") == 0) {
+				b64 = 1;
 			}
 		}
-		else {
-			b64 = 0;
-			for (int i = 1; i < argc; i++) {
-				//determine user mode
-				if (strcmp(argv[i], "-e") == 0 || strcmp(argv[i], "--encrypt") == 0) {
-					mode = 0;
-				}
-				if (strcmp(argv[i], "-d") == 0 || strcmp(argv[i], "--decrypt") == 0) {
-					mode = 1;
-				}
 
-				//get message
-				if (strcmp(argv[i], "-m") == 0 || strcmp(argv[i], "--message") == 0) {
-					message = argv[i + 1];
-					i++;
-				}
-
-				//get key
-				if (strcmp(argv[i], "-k") == 0 || strcmp(argv[i], "--key") == 0) {
-					key = argv[i + 1];
-					i++;
-				}
-
-				//get shift values
-				if (strcmp(argv[i], "-i") == 0 || strcmp(argv[i], "--initial-shift") == 0) {
-					initShift = atoi(argv[i + 1]);
-					i++;
-				}
-				if (strcmp(argv[i], "-s") == 0 || strcmp(argv[i], "--shift-value") == 0) {
-					shiftValue = atoi(argv[i + 1]);
-					i++;
-				}
-
-				//toggle base64 mode
-				if (strcmp(argv[i], "-b64") == 0 || strcmp(argv[i], "--base64") == 0) {
-					b64 = 1;
-				}
-			}
-
+		if (hasMode && hasMessage && hasInit && hasShift) {
 			mainFunc(scrambler, shiftValue, initShift, mode, b64, showKey, message, key, true);
+		}
+		else {
+			std::cerr << "Invalid parameters. Use --help or -h to show help.";
+			return 1;
 		}
 	}
 
-    return 0;
+	return 0;
 }
