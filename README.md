@@ -1,7 +1,7 @@
 # WordScrambler2001
 <p align="center">
   <img src="https://vignette.wikia.nocookie.net/poke5forum/images/d/d3/Missingno.jpg/revision/latest?cb=20160704182408&path-prefix=de" width=150 height="auto" /> <br>
-  A (very simple) monoalphabetic substitution cipher
+  A (fairly simple) monoalphabetic substitution cipher
 </p>
 
 This cipher works by replacing every letter in a string with the corresponding letter in the key alphabet, adding a changing offset.
@@ -23,6 +23,7 @@ There are two ways to use the program.
 1. Enter your shifting values. They determine the way the algorithm shifts the individual letters.
 1. Select a mode.
 1. Select if your output should be Base64 encoded.
+1. Select if you want to enable verbose logging
 
 #### Command Line Mode:
 Call the program using `WordScrambler2001.exe <parameters>`
