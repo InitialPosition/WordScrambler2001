@@ -36,6 +36,7 @@ Parameter|Optional Parameter|Meaning|Optional
 --initial-shift|-i|Initial Cipher Shift|No
 --shift-value|-s|Cipher Shift Value|No
 --base64|-b64|Whether Input/Output is in Base64|Yes
+--verbose|-v|Activate verbose logging|Yes
 
 ## Roadmap
 - [X] Add parameter mode
