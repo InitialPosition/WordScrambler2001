@@ -13,7 +13,7 @@ void mainFunc(Scrambler scrambler, int shiftValue, int initShift, int mode, int 
 			std::cout << std::endl << "MODE: ENCRYPTION" << std::endl;
 		}
 		if (mode == 1) {
-			std::cout << "MODE: DECRYPTION" << std::endl;
+			std::cout << std::endl << "MODE: DECRYPTION" << std::endl;
 		}
 	}
 
